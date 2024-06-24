@@ -1,7 +1,9 @@
 import express from "express";
+const app = express();
 import mongoose, { connect } from "mongoose";
 import dotenv from "dotenv";
-import UserRoute from "./routes/User.js";
+import UserRoute from "./routes/User.routes.js";
+import authRoute from "./routes/auth.js"
 
 dotenv.config();
 mongoose.connect(process.env.MONGO_URL)
@@ -10,14 +12,15 @@ mongoose.connect(process.env.MONGO_URL)
     console.log(err);
 });
 
-const app = express();
+// const app = express();
 app.listen(process.env.PORT || 5000, () => {
-    console.log("backend is running!");
-})
+    console.log("backend server is running!");
+    })
 
-app.get("/api/test", () => {
-    console.log("test is successful!");
-});
+    app.use("/api/user", authRoute);
+    app.use("/api/auth", UserRoute);
 
-app.use("/api/user", UserRoute);
+
+
+
 
